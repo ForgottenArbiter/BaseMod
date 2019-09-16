@@ -15,6 +15,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 public class CustomBosses
 {
@@ -51,8 +52,12 @@ public class CustomBosses
 				return;
 			}
 
-			AbstractDungeon.bossList.addAll(BaseMod.getBossIDs(AbstractDungeon.id));
-			Collections.shuffle(AbstractDungeon.bossList, new java.util.Random(AbstractDungeon.monsterRng.randomLong()));
+			// Ensure that the next shuffle doesn't mess up the monsterRng when no bosses are added
+			List<String> bossIDs = BaseMod.getBossIDs(AbstractDungeon.id);
+			if (bossIDs.size() > 0) {
+				AbstractDungeon.bossList.addAll(bossIDs);
+				Collections.shuffle(AbstractDungeon.bossList, new java.util.Random(AbstractDungeon.monsterRng.randomLong()));
+			}
 		}
 	}
 
